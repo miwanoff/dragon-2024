@@ -9,6 +9,7 @@ let up = 0; // насколько дракон переместился ввер
 let dragon_x = 100; // координата x дракона
 let dragon_h = 46;
 let dragon_y = 100;
+let grass_y = 205;
 
 // Направления движения, задаются стрелками клавиатуры
 let directions = {
@@ -31,8 +32,21 @@ function drawGrass(context) {
   context.beginPath();
   context.strokeStyle = "#0f0";
   context.lineWidth = 1;
-  context.moveTo(0, 205);
-  context.lineTo(canvas.width, 205);
+  context.moveTo(0, grass_y);
+  context.lineTo(canvas.width, grass_y);
+  context.stroke();
+}
+
+// Холмы
+function drawHill(context, x, w, h) {
+  // checkCollision(dragon_x, x, w);
+  context.beginPath();
+  context.strokeStyle = "#000";
+  context.lineWidth = 1;
+  context.moveTo(x, grass_y);
+  context.lineTo(x + w / 4, grass_y - h);
+  context.lineTo(x + (w * 3) / 4, grass_y - h);
+  context.lineTo(x + w, grass_y);
   context.stroke();
 }
 
@@ -42,7 +56,10 @@ window.onload = function () {
   canvas.width = screen.width;
   if (canvas && context) {
     // start();
-    drawDragon(context, 200, 205);
+    drawDragon(context, 200, grass_y);
     drawGrass(context);
+    drawHill(context, 300, 100, 30);
+    // drawHill(context, 700, 50, 30);
+    // drawHill(context, 1200, 200, 80);
   }
 };
