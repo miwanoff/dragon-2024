@@ -1,6 +1,6 @@
 let canvas; // Для canvas
 let context; // Для контекста canvas
-let position_x = screen.width; // координата x для движущихся холмов, изначально они не видны
+let position_x = 300; // координата x для движущихся холмов, изначально они не видны
 let position_y = 0; // координата y для движущихся холмов
 let speed = 2; // скорость движения холмов(на сколько будет изменяться position_x)
 let timer; // Для setTimeout()
@@ -50,16 +50,50 @@ function drawHill(context, x, w, h) {
   context.stroke();
 }
 
+function animateDragon(context, canvas, speed) {
+  context = canvas.getContext("2d");
+  // Очистить холст
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  drawDragon(context, dragon_x, grass_y); // Рисуем дракона
+  drawGrass(context); // Рисуем траву
+  // Рисуем холмы
+  drawHill(context, position_x, 40, 35);
+  drawHill(context, position_x + 220, 30, 25);
+  drawHill(context, position_x + 490, 50, 45);
+
+  if (position_x + 490 > 0) {
+    // Если холмы еще видны, уменьшаем координату x
+    position_x -= speed;
+  } 
+  else {
+    // Если холмы уже не видны, "перемещаем" их опять направо за холст
+    //stop();
+    position_x = canvas.width;
+  }
+  console.log(position_x);
+}
+function stop() {
+  clearInterval(timer);
+}
+
+function start() {
+  stop();
+  // timer = setInterval(animateDragon.bind(this, context, canvas), 1000);
+  timer = setInterval(animateDragon, 10, context, canvas, speed);
+}
+
 window.onload = function () {
   canvas = document.getElementById("dragon");
   let context = canvas.getContext("2d");
   canvas.width = screen.width;
   if (canvas && context) {
     // start();
-    drawDragon(context, 200, grass_y);
-    drawGrass(context);
-    drawHill(context, 300, 100, 30);
+    // drawDragon(context, 200, grass_y);
+    // drawGrass(context);
+    // drawHill(context, 300, 100, 30);
     // drawHill(context, 700, 50, 30);
     // drawHill(context, 1200, 200, 80);
+    //animateDragon(context, speed);
+    start();
   }
 };
