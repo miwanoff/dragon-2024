@@ -1,6 +1,6 @@
 let canvas; // Для canvas
 let context; // Для контекста canvas
-let position_x = 300; // координата x для движущихся холмов, изначально они не видны
+let position_x = screen.width; // координата x для движущихся холмов, изначально они не видны
 let position_y = 0; // координата y для движущихся холмов
 let speed = 2; // скорость движения холмов(на сколько будет изменяться position_x)
 let timer; // Для setTimeout()
@@ -23,7 +23,7 @@ let dragon_image = new Image();
 dragon_image.src = "images/dragon.png";
 
 function drawDragon(context, x, y) {
-  dragon_y = y - 46;
+  dragon_y = y - 46 + up;
   context.drawImage(dragon_image, x, dragon_y);
 }
 
@@ -39,7 +39,7 @@ function drawGrass(context) {
 
 // Холмы
 function drawHill(context, x, w, h) {
-  // checkCollision(dragon_x, x, w);
+  checkCollision(dragon_x, x, w);
   context.beginPath();
   context.strokeStyle = "#000";
   context.lineWidth = 1;
@@ -61,11 +61,10 @@ function animateDragon(context, canvas, speed) {
   drawHill(context, position_x + 220, 30, 25);
   drawHill(context, position_x + 490, 50, 45);
 
-  if (position_x + 490 > 0) {
+  if (position_x + 490 + 50 > 0) {
     // Если холмы еще видны, уменьшаем координату x
     position_x -= speed;
-  } 
-  else {
+  } else {
     // Если холмы уже не видны, "перемещаем" их опять направо за холст
     //stop();
     position_x = canvas.width;
@@ -80,6 +79,14 @@ function start() {
   stop();
   // timer = setInterval(animateDragon.bind(this, context, canvas), 1000);
   timer = setInterval(animateDragon, 10, context, canvas, speed);
+}
+
+function checkCollision(coord1, coord2, width) {
+  if (coord1 > coord2 && coord1 < coord2 + width && up == 0) {
+    alert("collision");
+    stop();
+    return;
+  }
 }
 
 window.onload = function () {
@@ -97,3 +104,14 @@ window.onload = function () {
     start();
   }
 };
+
+// Задаем обработчик события keydown
+addEventListener("keydown", function (event) {
+  direction = directions[event.keyCode];
+  if (direction == "up") {
+    up = -80;
+    setTimeout(function () {
+      up = 0;
+    }, 600);
+  }
+});
