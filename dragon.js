@@ -51,7 +51,7 @@ function drawHill(context, x, w, h) {
 }
 
 function animateDragon(context, canvas, speed) {
-  context = canvas.getContext("2d");
+  //context = canvas.getContext("2d");
   // Очистить холст
   context.clearRect(0, 0, canvas.width, canvas.height);
   drawDragon(context, dragon_x, grass_y); // Рисуем дракона
@@ -75,7 +75,7 @@ function stop() {
   clearInterval(timer);
 }
 
-function start() {
+function start(canvas, context) {
   stop();
   // timer = setInterval(animateDragon.bind(this, context, canvas), 1000);
   timer = setInterval(animateDragon, 10, context, canvas, speed);
@@ -101,7 +101,7 @@ window.onload = function () {
     // drawHill(context, 700, 50, 30);
     // drawHill(context, 1200, 200, 80);
     //animateDragon(context, speed);
-    start();
+    start(canvas, context);
   }
 };
 
