@@ -13,10 +13,10 @@ let grass_y = 205;
 
 // Направления движения, задаются стрелками клавиатуры
 let directions = {
-  37: "left",
-  38: "up",
-  39: "right",
-  40: "down",
+  ArrowLeft: "left",
+  ArrowUp: "up",
+  ArrowRight: "right",
+  ArrowDown: "down",
 };
 
 let dragon_image = new Image();
@@ -105,9 +105,9 @@ window.onload = function () {
   }
 };
 
-// Задаем обработчик события keydown
+// Задаємо обробник події keydown
 addEventListener("keydown", function (event) {
-  direction = directions[event.keyCode];
+  direction = directions[event.key];
   if (direction == "up") {
     up = -80;
     setTimeout(function () {
